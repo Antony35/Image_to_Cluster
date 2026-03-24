@@ -1,0 +1,47 @@
+---
+- name: Deploy Custom Nginx to K3d
+  hosts: local
+  tasks:
+    - name: Create Nginx Deployment
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: nginx-packer-ansible
+            namespace: default
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: my-nginx
+            template:
+              metadata:
+                labels:
+                  app: my-nginx
+              spec:
+                containers:
+                  - name: nginx
+                    image: my-custom-nginx:v1
+                    imagePullPolicy: Never
+                    ports:
+                      - containerPort: 80
+
+    - name: Create Nginx Service
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: nginx-service
+            namespace: default
+          spec:
+            selector:
+              app: my-nginx
+            ports:
+              - protocol: TCP
+                port: 80
+                targetPort: 80
+            type: ClusterIP
