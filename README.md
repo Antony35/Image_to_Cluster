@@ -90,3 +90,4 @@ Cet atelier, **noté sur 20 points**, est évalué sur la base du barème suivan
 - Processus travail (quantité de commits, cohérence globale, interventions externes, ...) (4 points) 
 
 
+Change 
